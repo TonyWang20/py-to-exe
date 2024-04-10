@@ -5,20 +5,27 @@ on:
     paths:
       - '*.py'
 
+permissions:
+  contents: read
+
 jobs:
-  build:
+  pyinstaller-build:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Install Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.12'
-    - name: Build Executable
-      run: |
-        for file in *.py; do
-          pyinstaller --onefile --name "${file%.*}" $file
-        done
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.12'
+          
+      - name: Install PyInstaller
+        run: pip install pyinstaller
         
-      shell: bash
-
+      - name: Create Executables
+        run: |
+          for file in *.py; do
+            pyinstaller --onefile --name "${file%.*}" "$file"
+          done
+        shell: bash
