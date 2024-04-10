@@ -25,7 +25,14 @@ jobs:
         
       - name: Create Executables
         run: |
+          mkdir dist  # Ensure dist directory exists
           for file in *.py; do
-            pyinstaller --onefile --name "${file%.*}" "$file"
+            pyinstaller --onefile --distpath dist --name "${file%.*}" "$file"
           done
         shell: bash
+
+      - name: Upload Executables as Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: executables
+          path: dist/**
