@@ -19,3 +19,6 @@ jobs:
         for file in *.py; do
           pyinstaller --onefile --name "${file%.*}" $file
         done
+        
+      shell: bash
+
